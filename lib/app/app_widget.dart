@@ -1,4 +1,6 @@
-import 'package:authentication/app/features/sign_up/views/sign_up_view.dart';
+import 'package:authentication/app/features/auth/presenter/login/views/sign_in_view.dart';
+import 'package:authentication/app/features/auth/presenter/sign_up/views/sign_up_view.dart';
+// import 'package:authentication/app/features/presenter/sign_up/views/sign_up_view.dart';
 import 'package:flutter/material.dart';
 
 class AppWidget extends StatelessWidget {
@@ -7,7 +9,12 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SignUpView(),
+      initialRoute: '/signin',
+      routes: {
+        "/signin": (context) => SignInView(),
+        "/signup": (context) => SignUpView()
+      },
+      home: SignInView(),
     );
   }
 }
