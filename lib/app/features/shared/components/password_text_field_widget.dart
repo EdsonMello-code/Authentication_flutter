@@ -1,3 +1,4 @@
+import 'package:authentication/app/features/auth/presenter/login/controllers/login_controller.dart';
 import 'package:authentication/app/features/shared/strings/strings.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +20,19 @@ class PasswordTextFieldWidget extends StatefulWidget {
 }
 
 class _PasswordTextFieldWidgetState extends State<PasswordTextFieldWidget> {
+  late final LoginController loginController;
+
+  @override
+  void initState() {
+    loginController = LoginController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       // autofocus: true,
+      validator: (password) => loginController.passwordValidate(password),
       onFieldSubmitted: widget.onFieldSubmitted,
       focusNode: widget.focusNode,
       controller: widget.controller,
