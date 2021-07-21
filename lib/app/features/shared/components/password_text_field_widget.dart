@@ -1,4 +1,4 @@
-import 'package:authentication/app/features/auth/presenter/shared/strings/strings.dart';
+import 'package:authentication/app/features/shared/strings/strings.dart';
 import 'package:flutter/material.dart';
 
 class PasswordTextFieldWidget extends StatefulWidget {

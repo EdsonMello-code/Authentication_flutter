@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:authentication/app/features/auth/presenter/shared/colors/colors.dart';
+import 'package:authentication/app/features/shared/colors/colors.dart';
 
 class ButtonsOAthWidget extends StatefulWidget {
   const ButtonsOAthWidget({Key? key}) : super(key: key);

@@ -1,10 +1,12 @@
-import 'package:authentication/app/features/auth/presenter/shared/components/button_action_widget.dart';
-import 'package:authentication/app/features/auth/presenter/shared/components/buttons_oath_widget.dart';
-import 'package:authentication/app/features/auth/presenter/shared/components/email_text_field_widget.dart';
-import 'package:authentication/app/features/auth/presenter/shared/components/password_text_field_widget.dart';
-import 'package:authentication/app/features/auth/presenter/shared/strings/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:authentication/app/features/auth/presenter/shared/colors/colors.dart';
+
+import 'package:authentication/app/features/shared/components/button_action_widget.dart';
+import 'package:authentication/app/features/shared/components/buttons_oath_widget.dart';
+import 'package:authentication/app/features/shared/components/email_text_field_widget.dart';
+import 'package:authentication/app/features/shared/components/password_text_field_widget.dart';
+
+import 'package:authentication/app/features/shared/strings/strings.dart';
+import 'package:authentication/app/features/shared/colors/colors.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
