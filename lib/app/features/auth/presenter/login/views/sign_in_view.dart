@@ -28,6 +28,7 @@ class _SignInViewState extends State<SignInView> {
   late final TextEditingController passwordController;
   late final FocusNode focusNodeEmail;
   late final FocusNode focusNodePassword;
+  late final GlobalKey<FormState> _globalKey;
 
   @override
   void initState() {
@@ -43,6 +44,9 @@ class _SignInViewState extends State<SignInView> {
     passwordController = TextEditingController();
     focusNodeEmail = FocusNode();
     focusNodePassword = FocusNode();
+
+    _globalKey = GlobalKey<FormState>();
+
     super.initState();
   }
 
@@ -56,6 +60,11 @@ class _SignInViewState extends State<SignInView> {
   }
 
   onSubmitted(_) async {
+    final isFormValid = _globalKey.currentState!.validate();
+    if (!isFormValid) {
+      return;
+    }
+
     final user = await loginUsecase(LoginDTO(
         email: emailController.text, password: passwordController.text));
     user.fold(
@@ -84,101 +93,106 @@ class _SignInViewState extends State<SignInView> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Container(
-        width: size.width,
-        height: size.height,
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 35,
-            ),
-            Image.asset('assets/images/login.png'),
-            const SizedBox(
-              height: 35,
-            ),
-            SizedBox(
-              width: size.width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Text(
-                        Strings.signinTitle,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primaryColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 30.0, top: 20),
-                      child: Form(
-                          child: Column(
-                        children: [
-                          EmailTextFieldWidget(
-                            focusNode: focusNodeEmail,
-                            controller: emailController,
-                            onFieldSubmitted: (_) =>
-                                focusNodePassword.requestFocus(),
-                          ),
-                          const SizedBox(
-                            height: 18,
-                          ),
-                          PasswordTextFieldWidget(
-                            onFieldSubmitted: onSubmitted,
-                            focusNode: focusNodePassword,
-                            controller: passwordController,
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          ButtonActionWidget(
-                            onPressed: () => onSubmitted(''),
-                            title: Strings.signinTitle,
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          const Text(
-                            '${Strings.signinLabel}',
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 17),
-                          ),
-                          const SizedBox(
-                            height: 18,
-                          ),
-                          const ButtonsOAthWidget(),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(Strings.signinSublabel,
-                                  style:
-                                      const TextStyle(color: Colors.black87)),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context)
-                                      .pushReplacementNamed('/signup');
-                                },
-                                child: const Text(
-                                  ' ' + Strings.signinLink,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      )),
-                    )
-                  ],
+      body: SingleChildScrollView(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 35,
                 ),
-              ),
-            )
-          ],
+                Image.asset('assets/images/login.png'),
+                const SizedBox(
+                  height: 35,
+                ),
+                SizedBox(
+                  width: size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            Strings.signinTitle,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primaryColor,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 30.0, top: 20),
+                          child: Form(
+                              key: _globalKey,
+                              child: Column(
+                                children: [
+                                  EmailTextFieldWidget(
+                                    focusNode: focusNodeEmail,
+                                    controller: emailController,
+                                    onFieldSubmitted: (_) =>
+                                        focusNodePassword.requestFocus(),
+                                  ),
+                                  const SizedBox(
+                                    height: 18,
+                                  ),
+                                  PasswordTextFieldWidget(
+                                    onFieldSubmitted: onSubmitted,
+                                    focusNode: focusNodePassword,
+                                    controller: passwordController,
+                                  ),
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  ButtonActionWidget(
+                                    onPressed: () => onSubmitted(''),
+                                    title: Strings.signinTitle,
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  const Text(
+                                    '${Strings.signinLabel}',
+                                    style: const TextStyle(
+                                        color: Colors.grey, fontSize: 17),
+                                  ),
+                                  const SizedBox(
+                                    height: 18,
+                                  ),
+                                  const ButtonsOAthWidget(),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(Strings.signinSublabel,
+                                          style: const TextStyle(
+                                              color: Colors.black87)),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushReplacementNamed('/signup');
+                                        },
+                                        child: const Text(
+                                          ' ' + Strings.signinLink,
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
