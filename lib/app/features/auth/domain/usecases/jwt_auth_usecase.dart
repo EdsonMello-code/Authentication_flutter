@@ -4,18 +4,18 @@ import 'package:authentication/app/features/auth/domain/errors/login_error.dart'
 import 'package:authentication/app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 
-abstract class ILoginRepository {
+abstract class IJWTAuthUsecase {
   Future<Either<LoginError, BaseLoginEntity>> call(LoginDTO params);
 }
 
-class LoginUsecase implements ILoginRepository {
+class JWTAuthUsecase implements IJWTAuthUsecase {
   final AuthRepository authRepository;
 
-  const LoginUsecase({required this.authRepository});
+  const JWTAuthUsecase({required this.authRepository});
 
   @override
   Future<Either<LoginError, BaseLoginEntity>> call(LoginDTO params) async {
-    final user = await authRepository.login(params);
+    final user = await authRepository.loginWithJWT(params);
     return user;
   }
 }
