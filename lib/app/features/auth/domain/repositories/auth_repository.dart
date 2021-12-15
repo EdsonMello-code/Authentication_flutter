@@ -4,5 +4,5 @@ import 'package:authentication/app/features/auth/domain/errors/login_error.dart'
 import 'package:dartz/dartz.dart';
 
 abstract class AuthRepository {
-  Future<Either<LoginError, BaseLoginEntity>> login(LoginDTO params);
+  Future<Either<LoginError, BaseLoginEntity>> loginWithJWT(LoginDTO params);
 }

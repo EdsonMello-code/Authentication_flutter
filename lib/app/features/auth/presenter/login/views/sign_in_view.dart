@@ -1,8 +1,9 @@
+import 'package:authentication/app/features/auth/externals/datasources/services/dio_client_http.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
 import 'package:authentication/app/features/auth/domain/DTOs/login_dto.dart';
-import 'package:authentication/app/features/auth/domain/usecases/login_usecase.dart';
+import 'package:authentication/app/features/auth/domain/usecases/jwt_auth_usecase.dart';
 import 'package:authentication/app/features/auth/externals/datasources/login_datasource_impl.dart';
 import 'package:authentication/app/features/auth/infra/repositories/auth_repository_impl.dart';
 
@@ -23,7 +24,7 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  late final LoginUsecase loginUsecase;
+  late final JWTAuthUsecase loginUsecase;
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
   late final FocusNode focusNodeEmail;
@@ -32,10 +33,10 @@ class _SignInViewState extends State<SignInView> {
 
   @override
   void initState() {
-    loginUsecase = LoginUsecase(
+    loginUsecase = JWTAuthUsecase(
       authRepository: AuthRepositoryImpl(
         loginDatasource: LoginDatasourceImpl(
-          httpClient: Dio(),
+          httpClient: DioHttpClient(dio: Dio()),
         ),
       ),
     );
@@ -56,6 +57,7 @@ class _SignInViewState extends State<SignInView> {
     passwordController.dispose();
     focusNodeEmail.dispose();
     focusNodePassword.dispose();
+
     super.dispose();
   }
 
@@ -65,8 +67,12 @@ class _SignInViewState extends State<SignInView> {
       return;
     }
 
-    final user = await loginUsecase(LoginDTO(
-        email: emailController.text, password: passwordController.text));
+    final user = await loginUsecase(
+      LoginDTO(
+        email: emailController.text,
+        password: passwordController.text,
+      ),
+    );
     user.fold(
       (l) {
         print(l.message);
